@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository repository;
+    private static final int MAX_FREE_TX = 10;
+    private static final double COMMISSION = 2.0;
 
     public TransactionServiceImpl(TransactionRepository repository) {
         this.repository = repository;
