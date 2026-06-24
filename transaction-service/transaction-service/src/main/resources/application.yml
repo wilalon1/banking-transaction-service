@@ -1,0 +1,26 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: transaction-service
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+  cloud:
+    config:
+      fail-fast: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: localhost
+
+
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
