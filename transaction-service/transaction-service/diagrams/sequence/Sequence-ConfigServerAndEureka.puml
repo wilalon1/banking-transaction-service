@@ -1,0 +1,21 @@
+@startuml
+title Transaction Service - Startup Flow
+
+participant "Transaction Service" as MS
+participant "Config Server" as CS
+participant "Eureka Server" as EU
+
+MS -> CS : Load configuration (optional)
+CS --> MS : application.yml properties
+
+MS -> EU : Register service (TRANSACTION-SERVICE)
+EU --> MS : Registered instance
+
+note right of MS
+Service ready:
+- API Gateway routing active
+- MongoDB connection ready
+- RxJava reactive endpoints enabled
+end note
+
+@enduml

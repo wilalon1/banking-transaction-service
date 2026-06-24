@@ -1,0 +1,30 @@
+@startuml
+title Transaction Service - Get All Transactions
+
+actor Client
+participant "API Gateway" as GW
+participant "Eureka Server" as EU
+participant "Transaction Controller" as TC
+participant "Transaction Service" as TS
+participant "Transaction Repository" as TR
+database "MongoDB" as DB
+
+Client -> GW : GET /api/transactions
+GW -> EU : Resolve service
+EU --> GW : Instance
+
+GW -> TC : Forward request
+
+TC -> TS : findAll()
+
+TS -> TR : findAll()
+TR -> DB : query all transactions
+
+DB --> TR : Flux<Transaction>
+TR --> TS : Observable<Transaction>
+
+TS --> TC : Observable<Transaction>
+TC --> GW : Response list
+GW --> Client : JSON list
+
+@enduml

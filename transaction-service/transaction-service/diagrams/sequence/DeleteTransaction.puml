@@ -1,0 +1,27 @@
+@startuml
+title Transaction Service - Delete Transaction
+
+actor Client
+participant "API Gateway" as GW
+participant "Transaction Controller" as TC
+participant "Transaction Service" as TS
+participant "Transaction Repository" as TR
+database "MongoDB" as DB
+
+Client -> GW : DELETE /api/transactions/{id}
+
+GW -> TC : Forward request
+
+TC -> TS : delete(id)
+
+TS -> TR : deleteById(id)
+TR -> DB : remove document
+
+DB --> TR : success
+TR --> TS : Completable
+
+TS --> TC : Completable complete
+TC --> GW : 200 OK
+GW --> Client : Deleted
+
+@enduml

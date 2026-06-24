@@ -1,0 +1,29 @@
+@startuml
+title Transaction Service - Update Transaction
+
+actor Client
+participant "API Gateway" as GW
+participant "Transaction Controller" as TC
+participant "Transaction Service" as TS
+participant "Transaction Repository" as TR
+database "MongoDB" as DB
+
+Client -> GW : PUT /api/transactions/{id}
+
+GW -> TC : Forward request
+
+TC -> TS : update(id, tx)
+
+TS -> TS : tx.setId(id)
+
+TS -> TR : save(tx)
+TR -> DB : update document (upsert)
+
+DB --> TR : updated document
+TR --> TS : Single<Transaction>
+
+TS --> TC : Single<Transaction>
+TC --> GW : Response OK
+GW --> Client : Updated transaction
+
+@enduml

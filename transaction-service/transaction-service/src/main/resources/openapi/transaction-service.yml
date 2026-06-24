@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: Transaction Service API
+  version: 1.0.0
+
+paths:
+
+  /api/transactions:
+    post:
+      summary: Create transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        "200":
+          description: Created
+
+    get:
+      summary: Get all transactions
+      responses:
+        "200":
+          description: List of transactions
+
+  /api/transactions/customer/{customerId}:
+    get:
+      summary: Get transactions by customer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+      responses:
+        "200":
+          description: List filtered
+
+  /api/transactions/{id}:
+    put:
+      summary: Update transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        "200":
+          description: Updated
+
+    delete:
+      summary: Delete transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Deleted
+
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        accountId:
+          type: string
+        creditId:
+          type: string
+        customerId:
+          type: string
+        type:
+          type: string
+        amount:
+          type: number
+        balanceAfter:
+          type: number

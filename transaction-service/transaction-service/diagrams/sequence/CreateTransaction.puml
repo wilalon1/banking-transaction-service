@@ -1,0 +1,30 @@
+@startuml
+title Transaction Service - Create Transaction
+
+actor Client
+participant "API Gateway" as GW
+participant "Eureka Server" as EU
+participant "Transaction Controller" as TC
+participant "Transaction Service (RxJava)" as TS
+participant "Transaction Repository" as TR
+database "MongoDB" as DB
+
+Client -> GW : POST /api/transactions
+GW -> EU : Resolve TRANSACTION-SERVICE
+EU --> GW : Instance URL
+
+GW -> TC : Forward request
+
+TC -> TS : create(Transaction)
+
+TS -> TR : save(tx)
+TR -> DB : insert document
+
+DB --> TR : saved Transaction
+TR --> TS : Single<Transaction>
+
+TS --> TC : Single<Transaction>
+TC --> GW : Response 200 OK
+GW --> Client : Transaction created
+
+@enduml

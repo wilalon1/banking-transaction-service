@@ -1,0 +1,27 @@
+@startuml
+title Transaction Service - Get By CustomerId
+
+actor Client
+participant "API Gateway" as GW
+participant "Transaction Controller" as TC
+participant "Transaction Service" as TS
+participant "Transaction Repository" as TR
+database "MongoDB" as DB
+
+Client -> GW : GET /api/transactions/customer/{id}
+
+GW -> TC : Forward request
+
+TC -> TS : findByCustomerId(id)
+
+TS -> TR : findByCustomerId(id)
+TR -> DB : query by customerId
+
+DB --> TR : Flux<Transaction>
+TR --> TS : Observable<Transaction>
+
+TS --> TC : Observable<Transaction>
+TC --> GW : Response list
+GW --> Client : JSON
+
+@enduml
