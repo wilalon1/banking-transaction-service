@@ -6,6 +6,8 @@ import com.banking.transactionservice.service.TransactionService;
 import io.reactivex.rxjava3.core.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
@@ -41,5 +43,25 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Completable delete(String id) {
         return Completable.fromPublisher(repository.deleteById(id));
+    }
+
+    @Override
+    public Observable<Transaction> findByAccountAndDateRange(
+            String accountId,
+            LocalDateTime from,
+            LocalDateTime to
+    ) {
+
+        return Observable.fromPublisher(
+                repository.findByAccountIdAndDateBetween(accountId, from, to)
+        );
+    }
+
+    @Override
+    public Observable<Transaction> findLast10ByAccount(String accountId) {
+
+        return Observable.fromPublisher(
+                repository.findTop10ByAccountIdOrderByDateDesc(accountId)
+        );
     }
 }

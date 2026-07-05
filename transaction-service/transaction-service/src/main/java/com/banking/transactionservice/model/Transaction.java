@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,10 +24,14 @@ public class Transaction {
     private String id;
 
     private String accountId;
-    private String creditId;
+
     private String customerId;
 
-    private String type;
+    private String type; // CREDIT / DEBIT
+
     private Double amount;
+
     private Double balanceAfter;
+
+    private LocalDateTime date;   //
 }

@@ -3,6 +3,8 @@ package com.banking.transactionservice.service;
 import com.banking.transactionservice.model.Transaction;
 import io.reactivex.rxjava3.core.*;
 
+import java.time.LocalDateTime;
+
 public interface TransactionService {
 
     Single<Transaction> create(Transaction tx);
@@ -14,4 +16,12 @@ public interface TransactionService {
     Single<Transaction> update(String id, Transaction tx);
 
     Completable delete(String id);
+
+    Observable<Transaction> findByAccountAndDateRange(
+            String accountId,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+
+    Observable<Transaction> findLast10ByAccount(String accountId);
 }

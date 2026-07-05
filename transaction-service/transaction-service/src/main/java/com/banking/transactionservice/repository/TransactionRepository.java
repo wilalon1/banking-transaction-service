@@ -5,10 +5,20 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 public interface TransactionRepository extends ReactiveMongoRepository<Transaction, String> {
 
     Flux<Transaction> findByCustomerId(String customerId);
     Flux<Transaction> findByAccountId(String accountId);
 
     Mono<Long> countByAccountId(String accountId);
+
+    Flux<Transaction> findByAccountIdAndDateBetween(
+            String accountId,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+
+    Flux<Transaction> findTop10ByAccountIdOrderByDateDesc(String accountId);
 }

@@ -5,6 +5,8 @@ import com.banking.transactionservice.service.TransactionService;
 import io.reactivex.rxjava3.core.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
@@ -39,5 +41,24 @@ public class TransactionController {
     @DeleteMapping("/{id}")
     public Completable delete(@PathVariable String id) {
         return service.delete(id);
+    }
+
+    @GetMapping("/account/{accountId}/range")
+    public Observable<Transaction> getByDateRange(
+            @PathVariable String accountId,
+            @RequestParam String from,
+            @RequestParam String to
+    ) {
+
+        return service.findByAccountAndDateRange(
+                accountId,
+                LocalDateTime.parse(from),
+                LocalDateTime.parse(to)
+        );
+    }
+
+    @GetMapping("/account/{accountId}/last10")
+    public Observable<Transaction> getLast10(@PathVariable String accountId) {
+        return service.findLast10ByAccount(accountId);
     }
 }
