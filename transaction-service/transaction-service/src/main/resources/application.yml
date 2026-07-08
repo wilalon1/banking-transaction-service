@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8084
 
 spring:
   application:
@@ -12,15 +12,50 @@ spring:
     config:
       fail-fast: true
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: transaction-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+
+  cache:
+    type: redis
+
+security:
+  jwt:
+    secret: secret-bank-1234567890
+
 eureka:
   instance:
     prefer-ip-address: true
     ip-address: 127.0.0.1
     hostname: localhost
 
-
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      transactionService:
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+
+  timelimiter:
+    instances:
+      transactionService:
+        timeoutDuration: 2s

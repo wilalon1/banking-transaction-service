@@ -7,10 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -27,11 +23,12 @@ public class Transaction {
 
     private String customerId;
 
-    private String type; // CREDIT / DEBIT
+    // CREDIT / DEBIT
+    private String type;
 
     private Double amount;
 
     private Double balanceAfter;
 
-    private LocalDateTime date;   //
+    private LocalDateTime date;
 }
